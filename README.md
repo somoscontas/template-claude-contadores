@@ -1,99 +1,102 @@
-# Bambu Monorepo Starter
+# Claude para Contadores — Plantilla de aplicación web
 
-Bambu is a high-performance, developer-first monorepo starter template. It is specifically pre-configured and optimized for development using **AI coding agents** and human developers looking for a fast, cohesive full-stack environment.
+Plantilla oficial del libro **Claude para Contadores** de [Somos Contas](https://somoscontas.com). Es la base sobre la que Claude Code construye tus herramientas contables: conciliadores, validadores de facturas, semáforos tributarios y cualquier aplicación que necesite guardar información.
 
----
-
-## 🛠️ Technology Stack
-
-- **Build Toolchain**: [Vite+](https://viteplus.dev/) (`vp`) — A unified, high-speed toolchain wrapping Vite, Rolldown, and Vitest.
-- **Frontend**: [Vue 3](https://vuejs.org/) + TypeScript + Vue Router.
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) — CSS-first styling framework integrated natively.
-- **Design System**: Reusable web components library in a dedicated package workspace.
-- **Backend**: [Hono](https://hono.dev/) — Fast Node.js web server.
-- **Auth**: [Better Auth](https://www.better-auth.com/) — Complete authentication system configured with database adapters.
-- **Database & ORM**: [SQLite (LibSQL)](https://github.com/tursodatabase/libsql) + [Drizzle ORM](https://orm.drizzle.team/) for migrations and queries.
-- **Icons**: [Lucide Icons](https://lucide.dev/).
-- **Package Management**: [pnpm](https://pnpm.io/) Workspaces.
+No arrancas desde una carpeta vacía. El servidor, la base de datos y el inicio de sesión ya están configurados, para que tu trabajo se concentre en lo que sí es irremplazable: las reglas del negocio.
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Tecnologías
+
+- **Herramientas de construcción**: [Vite+](https://viteplus.dev/) (`vp`), que agrupa Vite, Rolldown y Vitest.
+- **Interfaz**: [Vue 3](https://vuejs.org/) + TypeScript + Vue Router.
+- **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/) con la identidad visual de Somos Contas.
+- **Design system**: componentes reutilizables en un paquete propio.
+- **Servidor**: [Hono](https://hono.dev/) sobre Node.js.
+- **Usuarios**: [Better Auth](https://www.better-auth.com/) para registro e inicio de sesión.
+- **Base de datos**: [SQLite (LibSQL)](https://github.com/tursodatabase/libsql) + [Drizzle ORM](https://orm.drizzle.team/) para migraciones y consultas.
+- **Íconos**: [Lucide Icons](https://lucide.dev/).
+- **Paquetes**: espacios de trabajo de [pnpm](https://pnpm.io/).
+
+---
+
+## 📁 Estructura del proyecto
 
 ```
-bambu/
 ├── apps/
-│   ├── backend/          # Hono API Server, Better Auth setup, and Drizzle schema
-│   └── frontend/         # Vue 3 App, routing, state, and page layout (Tailwind v4)
+│   ├── backend/          # Servidor Hono, usuarios (Better Auth) y esquema de la base de datos
+│   └── frontend/         # Aplicación Vue 3, rutas y páginas (Tailwind v4)
 ├── packages/
-│   └── design-system/    # Reusable Vue components (e.g. BaseButton.vue) and theme vars
-├── data/                 # SQLite local database directory (git-ignored)
-├── inbox/                # Staging directory for external datasets, images, and mock assets
-├── pnpm-workspace.yaml   # pnpm Workspace and dependency catalog mode config
-├── package.json          # Root scripts and global configuration
-└── tsconfig.json         # Global TypeScript compiler options
+│   └── design-system/    # Componentes reutilizables (p. ej. BaseButton.vue) y colores de la marca
+├── data/                 # Base de datos SQLite local (no se sube a Git)
+├── inbox/                # Carpeta para tus archivos de prueba: extractos, XML, Excel
+├── pnpm-workspace.yaml   # Espacios de trabajo y versiones de las dependencias
+├── package.json          # Scripts y configuración general
+└── tsconfig.json         # Opciones globales de TypeScript
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Primeros pasos
 
-### 1. Installation
+Si vienes del libro, no necesitas escribir estos comandos: abre la carpeta en Claude Code y pídele que prepare y arranque el proyecto. Esta sección queda como referencia para Claude y para quien quiera hacerlo a mano.
 
-Install all workspace dependencies using `vp` (or `pnpm`):
+### 1. Instalación
+
+Instala todas las dependencias con `vp` (o `pnpm`):
 
 ```bash
 vp install
 ```
 
-This registers dependencies using **catalog mode** defined in the root `pnpm-workspace.yaml`, ensuring all packages use identical dependency versions.
+Las versiones se definen en un solo lugar, el `pnpm-workspace.yaml` (modo catálogo), para que todos los paquetes usen exactamente las mismas.
 
-### 2. Database Setup & Migrations
+### 2. Base de datos y migraciones
 
-The Hono backend utilizes an SQLite database stored locally at `data/db/bambu.db`. Interactions with Drizzle ORM are managed via package scripts in the backend workspace:
+El servidor usa una base de datos SQLite guardada en `data/db/bambu.db`. Estos son los comandos de Drizzle ORM:
 
-1. **Generate migrations** (scans your schema and creates SQL migration files):
+1. **Generar migraciones** (lee el esquema y crea los archivos SQL):
    ```bash
    pnpm --filter @bambu/backend db:generate
    ```
-2. **Apply migrations** (runs all pending SQL migrations against the database):
+2. **Aplicar migraciones** (ejecuta las migraciones pendientes sobre la base de datos):
    ```bash
    pnpm --filter @bambu/backend db:migrate
    ```
-3. **Push schema changes** (syncs the schema directly to the database without generating files, ideal for rapid prototyping):
+3. **Sincronizar el esquema** (aplica los cambios directamente, sin generar archivos; útil para pruebas rápidas):
    ```bash
    pnpm --filter @bambu/backend db:push
    ```
-4. **Open Drizzle Studio** (web-based visual explorer for your database):
+4. **Abrir Drizzle Studio** (explorador visual de la base de datos en el navegador):
    ```bash
    pnpm --filter @bambu/backend db:studio
    ```
 
-### 3. Running Development Environment
+### 3. Entorno de desarrollo
 
-To start all components in parallel (backend Hono API on port `3000`, frontend Vue client on port `5173`, and design-system in watch mode):
+Para arrancar todo al mismo tiempo (servidor en el puerto `3000`, interfaz en el `5173` y design system en modo observación):
 
 ```bash
 vp run dev
 ```
 
-- **Frontend**: [http://localhost:5173](http://localhost:5173) (running on Vite dev server)
-- **Backend Hono API**: [http://localhost:3000](http://localhost:3000) (running on Hono Vite dev server)
-- **Design System**: Rebuilds automatically on change.
+- **Interfaz**: [http://localhost:5173](http://localhost:5173)
+- **Servidor**: [http://localhost:3000](http://localhost:3000)
+- **Design system**: se recompila solo cuando cambias un componente.
 
-_Note: Both development servers are configured with `vite-plugin-killer-instincts` which automatically frees up their respective ports (`5173` and `3000`) if they are already in use when booting the dev environment._
+_Nota: los dos servidores usan `vite-plugin-killer-instincts`, que libera automáticamente los puertos `5173` y `3000` si otro proceso los está ocupando._
 
 ---
 
-## 🎨 Styling Guidelines (Tailwind CSS v4)
+## 🎨 Estilos (Tailwind CSS v4)
 
-- **CSS-First Theme Config**: Custom styling tokens are defined in `apps/frontend/src/index.css` inside the `@theme` block.
-- **Avoid Duplication**: The `@bambu/design-system` package does not package its own Tailwind compilation. It exports Vue components and a lightweight `theme.css` with raw fallback variables.
-- **Component Scanning**: The frontend compiler scans design system component files by using the `@source` directive in `index.css`:
+- **Identidad visual**: los colores y tipografías de Somos Contas se definen en `apps/frontend/src/index.css`, dentro del bloque `@theme`. El verde de la marca es `#059669`.
+- **Sin duplicación**: el paquete `@bambu/design-system` no compila Tailwind por su cuenta. Exporta los componentes Vue y un `theme.css` con variables de respaldo.
+- **Lectura de componentes**: la interfaz incluye los componentes del design system con la directiva `@source` en `index.css`:
   ```css
   @source "../../../packages/design-system/src/**/*.vue";
   ```
-- **CSS Cascade Layering**: To prevent custom global styles (like resets) from overriding Tailwind utilities, always wrap them in the `@layer base` block:
+- **Capas de CSS**: para que los estilos globales (como los reinicios) no anulen las clases de Tailwind, envuélvelos siempre en `@layer base`:
   ```css
   @layer base {
     * {
@@ -106,12 +109,14 @@ _Note: Both development servers are configured with `vite-plugin-killer-instinct
 
 ---
 
-## 📂 Root Staging (`inbox/` Folder)
+## 📂 La carpeta `inbox/`
 
-The root `/inbox` folder is reserved for developers and AI agents to put external data feeds, reference documents, mockup designs, static images, or database mock scripts. These assets are ignored by the production build but are fully accessible during development and agent operations.
+La carpeta `inbox/` es el lugar para dejar los archivos con los que Claude va a trabajar: extractos bancarios, facturas XML, listados de clientes en Excel, documentos de referencia o imágenes. Su contenido no se sube a Git ni forma parte de la aplicación final.
+
+Usa siempre datos ficticios o anonimizados.
 
 ---
 
-## 📝 License
+## 📝 Licencia
 
-Released under the [MIT License](LICENSE). Feel free to use and modify for personal and commercial projects.
+Publicada bajo la [Licencia MIT](LICENSE). Puedes usarla y modificarla en proyectos personales y comerciales.

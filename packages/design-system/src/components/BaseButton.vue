@@ -20,29 +20,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 const buttonClass = computed(() => {
   const baseClasses =
-    "group inline-flex items-center justify-center font-sans font-semibold rounded-md transition-all duration-300 ease-in-out relative overflow-hidden no-underline whitespace-nowrap select-none";
+    "group inline-flex items-center justify-center font-sans font-semibold rounded-[8px] cursor-pointer transition-colors duration-150 ease-in-out relative overflow-hidden no-underline whitespace-nowrap select-none";
 
   const sizeClasses = {
-    sm: "px-4 py-2 text-sm gap-2",
-    md: "px-6 py-3 text-base gap-[10px]",
-    lg: "px-8 py-4 text-lg gap-3",
+    sm: "px-[18px] py-[9px] text-[13px] gap-2",
+    md: "px-7 py-[13px] text-[15px] gap-[10px]",
+    lg: "px-8 py-4 text-base gap-3",
   }[props.size];
 
   const variantClasses = {
-    primary:
-      "bg-gradient-to-br from-primary to-secondary text-[#0b0c10] shadow-[0_0_15px_rgba(102,252,241,0.2)] hover:enabled:-translate-y-0.5 hover:enabled:shadow-[0_0_25px_rgba(102,252,241,0.4)] hover:enabled:from-primary-hover hover:enabled:to-secondary-hover active:enabled:translate-y-0",
+    primary: "bg-primary text-white border border-primary hover:enabled:bg-primary-hover",
     secondary:
-      "bg-bg-secondary text-text-primary border border-border-color hover:enabled:border-primary hover:enabled:shadow-[0_0_10px_rgba(102,252,241,0.1)] hover:enabled:-translate-y-0.5 active:enabled:translate-y-0",
+      "bg-transparent text-text-primary border border-border-color hover:enabled:border-text-primary",
     glass:
-      "bg-glass-bg border border-glass-border backdrop-blur-md text-text-primary shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:enabled:bg-[rgba(31,40,51,0.6)] hover:enabled:border-primary hover:enabled:-translate-y-0.5 active:enabled:translate-y-0",
-    danger:
-      "bg-gradient-to-br from-[#c3073f] to-[#950740] text-text-primary hover:enabled:-translate-y-0.5 hover:enabled:shadow-[0_0_15px_rgba(195,7,63,0.4)] active:enabled:translate-y-0",
+      "bg-glass-bg border border-glass-border backdrop-blur-md text-text-primary hover:enabled:border-primary",
+    danger: "bg-[#dc2626] text-white border border-[#dc2626] hover:enabled:bg-[#b91c1c]",
   }[props.variant];
 
   const stateClasses =
-    props.disabled || props.loading
-      ? "opacity-60 cursor-not-allowed pointer-events-none !transform-none !shadow-none"
-      : "";
+    props.disabled || props.loading ? "opacity-60 cursor-not-allowed pointer-events-none" : "";
 
   return [baseClasses, sizeClasses, variantClasses, stateClasses];
 });

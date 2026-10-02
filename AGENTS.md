@@ -59,7 +59,7 @@ Tailwind CSS v4 is configured as a CSS-first pipeline. AI agents must follow the
 ### 1. Unified CSS Compilation
 
 - **No Framework Pollution**: `@bambu/design-system` does **not** compile Tailwind CSS. It must only declare raw fallback CSS variables in `src/styles/theme.css`. Do **not** include `@import "tailwindcss";` in the design-system package configuration or stylesheet.
-- **Consolidated Entrypoint**: The frontend compiles all styles inside [index.css](file:///Users/josedaniel/Sites/josepaternina.com/bambu/apps/frontend/src/index.css). The design system's Vue components are scanned and compiled at build time by adding:
+- **Consolidated Entrypoint**: The frontend compiles all styles inside [index.css](apps/frontend/src/index.css). The design system's Vue components are scanned and compiled at build time by adding:
   ```css
   @source "../../../packages/design-system/src/**/*.vue";
   ```
