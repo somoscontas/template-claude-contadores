@@ -22,7 +22,12 @@
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
+      "development": "./src/index.ts",
       "import": "./dist/index.mjs"
+    },
+    "./theme.css": {
+      "development": "./src/styles/theme.css",
+      "default": "./dist/design-system.css"
     },
     "./dist/design-system.css": "./dist/design-system.css",
     "./package.json": "./package.json"

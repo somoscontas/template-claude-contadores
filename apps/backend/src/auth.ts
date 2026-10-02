@@ -12,7 +12,9 @@ if (!process.env.BETTER_AUTH_SECRET) {
   } catch {}
 }
 
-const trustedOrigins = process.env.TRUSTED_ORIGINS ? process.env.TRUSTED_ORIGINS.split(",") : [];
+const trustedOrigins = process.env.TRUSTED_ORIGINS
+  ? process.env.TRUSTED_ORIGINS.split(",")
+  : ["http://localhost:5173", "http://localhost:5174"];
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
