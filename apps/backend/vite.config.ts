@@ -15,6 +15,11 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
+    // Requerido por vite-plugin-killer-instincts: el plugin se desactiva
+    // solo si strictPort no está activo, y Vite se corre al siguiente
+    // puerto libre dejando VITE_API_URL/TRUSTED_ORIGINS apuntando al
+    // puerto equivocado.
+    strictPort: true,
   },
   envDir: "../../",
   build: {

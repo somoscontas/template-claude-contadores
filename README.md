@@ -41,15 +41,30 @@ No arrancas desde una carpeta vacía. El servidor, la base de datos y el inicio 
 
 Si vienes del libro, no necesitas escribir estos comandos: abre la carpeta en Claude Code y pídele que prepare y arranque el proyecto. Esta sección queda como referencia para Claude y para quien quiera hacerlo a mano.
 
+Antes de cualquier comando, crea el archivo de configuración a partir del ejemplo incluido:
+
+```bash
+cp .env.example .env
+```
+
 ### 1. Instalación
 
-Instala todas las dependencias con `vp` (o `pnpm`):
+**En una computadora recién instalada**, lo único que necesitas es Node.js 22.12 o superior. Ni `pnpm` ni `vp` vienen con Node, así que los comandos de abajo no existirán todavía: empieza activando el gestor de paquetes que el proyecto declara en su `package.json`, usando Corepack (incluido en Node):
+
+```bash
+corepack enable pnpm
+pnpm install
+```
+
+Corepack instala exactamente la versión de `pnpm` fijada en el campo `packageManager`, y el CLI `vp` queda disponible dentro del proyecto al terminar la instalación.
+
+**Si ya tienes `vp` o `pnpm` instalados globalmente**, basta con:
 
 ```bash
 vp install
 ```
 
-Las versiones se definen en un solo lugar, el `pnpm-workspace.yaml` (modo catálogo), para que todos los paquetes usen exactamente las mismas.
+Las versiones de las dependencias se definen en un solo lugar, el `pnpm-workspace.yaml` (modo catálogo), para que todos los paquetes usen exactamente las mismas.
 
 ### 2. Base de datos y migraciones
 
@@ -84,7 +99,7 @@ vp run dev
 - **Servidor**: [http://localhost:3000](http://localhost:3000)
 - **Design system**: se recompila solo cuando cambias un componente.
 
-_Nota: los dos servidores usan `vite-plugin-killer-instincts`, que libera automáticamente los puertos `5173` y `3000` si otro proceso los está ocupando._
+_Nota: los dos servidores usan `vite-plugin-killer-instincts` junto con `strictPort: true`, de modo que si otro proceso ocupa el puerto `5173` o el `3000`, el plugin lo termina y el servidor arranca en el puerto que le corresponde. El `strictPort` es obligatorio: sin él el plugin no hace nada y Vite se corre en silencio al siguiente puerto libre, dejando `VITE_API_URL` y `TRUSTED_ORIGINS` apuntando a un puerto donde ya no hay nadie._
 
 ---
 

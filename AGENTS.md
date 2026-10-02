@@ -8,7 +8,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 ## Review Checklist
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
+- [ ] Run `vp install` after pulling remote changes and before getting started. On a machine without a global `vp`/`pnpm`, bootstrap with `corepack enable pnpm && pnpm install` first (see README).
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
 - [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
@@ -115,6 +115,7 @@ Tailwind CSS v4 is configured as a CSS-first pipeline. AI agents must follow the
   - Backend API runs Hono under `@hono/vite-dev-server` on port `3000`.
   - Frontend runs Vue 3 on port `5173`.
 - **Process Port Locking**: Both development servers use `vite-plugin-killer-instincts`. If port `3000` or `5173` is occupied when starting development, the plugin kills the blocking process and starts up cleanly.
+  - **Do NOT remove `strictPort: true`** from `apps/frontend/vite.config.ts` or `apps/backend/vite.config.ts`. The plugin bails out early when `strictPort` is falsy (`if (!port || !config.server?.strictPort) return;`), so without it the kill never runs and Vite silently falls back to the next free port (`5174`, `3001`). The frontend then keeps calling `VITE_API_URL=http://localhost:3000`, where no server is listening, and CORS/Better Auth trusted origins no longer match the real frontend origin. Failures of this kind look like an unreachable API rather than a port problem.
 - **Backend Entrypoint Execution**: If you need to run the Node server directly outside of Vite dev server (e.g. for testing production entrypoints), run `node dist/index.js` or `tsx src/index.ts`. The server script conditionally bypasses starting Node's HTTP listener when running inside Vite by checking `!process.env.VITE`.
 - **Organized Workspace Logs**: The development environment is run concurrently from the root workspace using `concurrently` (running `vp run dev` or `pnpm dev`). This prefixes workspace logs cleanly (`[design-system]`, `[backend]`, `[frontend]`) and automatically terminates all processes if any of them is killed.
 
