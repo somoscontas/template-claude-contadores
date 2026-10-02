@@ -1,0 +1,25 @@
+services:
+  bambu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bambu:latest
+    container_name: bambu
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # El backend escucha siempre en 3000 dentro del contenedor.
+      PORT: 3000
+      SERVE_STATIC: "true"
+      DATABASE_URL: file:/app/data/db/bambu.db
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?define BETTER_AUTH_SECRET en tu .env}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+      # Orígenes de confianza (mismo origen al servir front+back juntos).
+      TRUSTED_ORIGINS: ${TRUSTED_ORIGINS:-http://localhost:3000}
+    volumes:
+      # Persiste la base de datos SQLite fuera del contenedor.
+      - bambu-data:/app/data
+
+volumes:
+  bambu-data:
